@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const maxDuration = 60;
+export const dynamic = 'force-dynamic';
+
 const TEXTIN_APP_ID = process.env.TEXTIN_APP_ID!;
 const TEXTIN_SECRET_CODE = process.env.TEXTIN_SECRET_CODE!;
 const TEXTIN_URL = 'https://api.textin.com/ai/service/v1/pdf_to_markdown';
