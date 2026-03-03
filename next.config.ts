@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
     contentDispositionType: 'attachment',
     remotePatterns: [],
   },
-  experimental: {
-    serverBodySizeLimit: '20mb',
-  },
 };
 
 export default nextConfig;

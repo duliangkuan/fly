@@ -30,7 +30,13 @@ export default function WriteDataModal({ blocks, onWrite, onClose }: Props) {
   const [parsedMarkdown, setParsedMarkdown] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4 MB
+
   const acceptFile = (f: File) => {
+    if (f.size > MAX_FILE_SIZE) {
+      setError(`文件过大（${(f.size / 1024 / 1024).toFixed(1)} MB），请上传小于 4 MB 的文件`);
+      return;
+    }
     setFile(f);
     setError('');
   };
@@ -81,10 +87,19 @@ export default function WriteDataModal({ blocks, onWrite, onClose }: Props) {
         body: formData,
       });
 
-      const data = await res.json();
+      const rawText = await res.text();
+      let data: Record<string, unknown>;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        if (res.status === 413) {
+          throw new Error('文件过大，请上传小于 4 MB 的文件');
+        }
+        throw new Error(`服务器返回异常响应（${res.status}）`);
+      }
 
       if (!res.ok || data.error) {
-        throw new Error(data.error || '解析失败');
+        throw new Error((data.error as string) || '解析失败');
       }
 
       const markdown: string =
