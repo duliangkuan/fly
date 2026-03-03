@@ -73,7 +73,8 @@ export default function ImportTemplateModal({ onImport, onClose }: Props) {
       });
 
       const rawText = await res.text();
-      let data: Record<string, unknown>;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let data: any;
       try {
         data = JSON.parse(rawText);
       } catch {
@@ -84,7 +85,7 @@ export default function ImportTemplateModal({ onImport, onClose }: Props) {
       }
 
       if (!res.ok || data.error) {
-        throw new Error((data.error as string) || '解析失败');
+        throw new Error(data.error || '解析失败');
       }
 
       // Extract markdown from response
