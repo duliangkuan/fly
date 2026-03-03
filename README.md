@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 飞机日报编辑器
 
-## Getting Started
+基于 Next.js 构建的飞机日报在线编辑与导出工具。
 
-First, run the development server:
+## 功能
+
+- **导入模板**：上传 Word/PDF，通过 TextIn API 解析全部内容（文字、表格、图片），直接导入编辑区
+- **写入数据**：上传数据来源文档，自动提取数据并填入编辑区表格的对应字段
+- **添加表格**：自定义行列数、字段行/字段列，创建空白表格
+- **添加文本**：在文档任意位置添加/编辑文本块
+- **导出**：一键导出为 PDF（保留排版）或 Word（可继续编辑）
+
+## 本地开发
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+访问 http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 部署到 Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 方法一：Vercel CLI
 
-## Learn More
+```bash
+npm install -g vercel
+vercel
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 方法二：GitHub + Vercel Dashboard
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. 将项目推送到 GitHub
+2. 在 [Vercel Dashboard](https://vercel.com) 导入仓库
+3. 在 Project Settings → Environment Variables 添加以下变量：
+   - `TEXTIN_APP_ID`：你的 TextIn App ID
+   - `TEXTIN_SECRET_CODE`：你的 TextIn Secret Code
+4. 点击 Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 环境变量
 
-## Deploy on Vercel
+| 变量名 | 说明 |
+|--------|------|
+| `TEXTIN_APP_ID` | TextIn API 应用 ID |
+| `TEXTIN_SECRET_CODE` | TextIn API 密钥 |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+本地开发在 `.env.local` 文件中配置（已自动创建，不会上传到 Git）。
